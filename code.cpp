@@ -242,7 +242,7 @@ byte * readImagePage (byte *hextext, uint16_t pageaddr, uint8_t pagesize, byte *
     b = (b<<4) + hexton(pgm_read_byte(hextext++));
     cksum += b;
     if (cksum != 0) {
-      error("Bad checksum: ");
+      Serial.print("Bad checksum: ");
       Serial.println(cksum, HEX);
     }
     if (pgm_read_byte(hextext++) != '\n') {
@@ -389,9 +389,9 @@ boolean verifyImage (byte *hextext)  {
     b = (b<<4) + hexton(pgm_read_byte(hextext++));
     cksum += b;
     if (cksum != 0) {
-      error("Bad checksum: ");
-      Serial.print(cksum, HEX);
-      return false;
+      Serial.print("Bad checksum: ");
+      Serial.println(cksum, HEX);
+//      return false;
     }
     if (pgm_read_byte(hextext++) != '\n') {
       error("No end of line");

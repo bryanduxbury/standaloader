@@ -95,12 +95,16 @@ boolean isReadyToStart() {
 
   if (digitalRead(CONTACT_PIN)) {
     digitalWrite(FAIL_PIN, LOW);
+    digitalWrite(SUCCESS_PIN, LOW);
   }
 
   return !digitalRead(CONTACT_PIN) && digitalRead(GO_SWITCH_PIN);
 }
 
 void programSequence() {
+  digitalWrite(READY_PIN, LOW);
+  digitalWrite(WORKING_PIN, HIGH);
+
   target_poweron();			/* Turn on target power */
 
   uint16_t signature;
@@ -164,6 +168,8 @@ void programSequence() {
     Serial.println("Fuses verified correctly!");
   }
   target_poweroff();			/* turn power off */
+  digitalWrite(WORKING_PIN, LOW);
+  digitalWrite(SUCCESS_PIN, HIGH);
 }
 
 void testSequence() {
@@ -173,19 +179,29 @@ void testSequence() {
   delay(500);
   digitalWrite(LIGHT_TEST_PIN, LOW);
   
-  tone(SPKR_TEST_PIN, 440);
-  delay(500);
-  noTone(SPKR_TEST_PIN);
+//  tone(SPKR_TEST_PIN, 440);
+//  delay(500);
+//  noTone(SPKR_TEST_PIN);
   // do actual testing logic!
 //  delay(10000);
 
   pinMode(LIGHT_TEST_PIN, INPUT);
+  digitalWrite(LIGHT_TEST_PIN, LOW);
   pinMode(SPKR_TEST_PIN, INPUT);
+  digitalWrite(SPKR_TEST_PIN, LOW);
   pinMode(SEND_TEST_PIN, INPUT);
+  digitalWrite(SEND_TEST_PIN, LOW);
 
-  digitalWrite(RESET, HIGH);
-  pinMode(RESET, OUTPUT);
-  delay(10000);
+//  pinMode(MISO, INPUT);
+//  pinMode(MOSI, INPUT);
+//  pinMode(SCK, INPUT);
+//
+//  digitalWrite(RESET, LOW);
+//  pinMode(RESET, OUTPUT);
+//  delay(500);
+//  digitalWrite(RESET, HIGH);
+//  delay(2500);
+//  digitalWrite(RESET, LOW);
 }
 
 void loop() {
